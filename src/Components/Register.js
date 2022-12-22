@@ -5,15 +5,16 @@ import { AuthContext } from '../contexts/AuthProvider';
 const Register = () => {
     const [accepted, setAccepted] = useState(false)
     const [error, setError] = useState('')
+    const [success, setSuccess] = useState('')
 
-    const { user, createUser, updateUser, verifyEmail } = useContext(AuthContext)
+    const { createUser, updateUser, verifyEmail } = useContext(AuthContext)
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const form = event.target;
 
         const email = form.email.value;
-        const password = form.password.value;
+        const password = form.pass.value;
         const name = form.name.value;
         const phone = form.phone.value;
 
@@ -24,18 +25,24 @@ const Register = () => {
                 form.reset();
                 updateUser(name, phone)
                 setError('');
-                verifyEmail()
-                    .then(() => {
-                        alert('Please check your email spam box and verify your email.')
-                    })
+                emailCheck();
+                setSuccess('Registration Successful')
             })
             .catch(error => {
                 console.error(error)
+                setSuccess('')
                 setError(error.message);
             })
     }
     const handleAccepted = (event) => {
         setAccepted(event.target.checked)
+    }
+
+    const emailCheck = () => {
+        verifyEmail()
+            .then(() => {
+                alert('Please check your email spam box and verify your email.')
+            })
     }
     return (
         <div className="hero min-h-screen bg-base-200">
@@ -67,7 +74,7 @@ const Register = () => {
                             <label className="label">
                                 <span className="label-text font-semibold">Password</span>
                             </label>
-                            <input type="password" name='password' placeholder="Enter your password" className="input input-bordered input-primary w-full max-w-xs" required />
+                            <input type="password" name='pass' placeholder="Enter your password" className="input input-bordered input-primary w-full max-w-xs" required />
                         </div>
 
                         <div className="form-control">
@@ -81,6 +88,9 @@ const Register = () => {
                         <div className="form-control mt-3">
                             <button className="btn btn-primary" type='submit' disabled={!accepted}>Register</button>
                             <small className='mt-3 font-semibold'>Already have an account? <Link to='/login'><span className='text-primary'>Login.</span></Link></small>
+                        </div>
+                        <div className='mt-3 text-success'>
+                            <p>{success}</p>
                         </div>
                         <div className='mt-3 text-error'>
                             <p>{error}</p>

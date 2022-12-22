@@ -5,7 +5,8 @@ import { AuthContext } from '../contexts/AuthProvider';
 const Login = () => {
     const [userEmail, setUserEmail] = useState('')
     const navigate = useNavigate()
-    const { SignIn, ForgetPassword } = useContext(AuthContext)
+    const { SignIn, ForgetPassword, user } = useContext(AuthContext)
+    console.log(user.emailVerified)
     const [error, setError] = useState('')
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -21,7 +22,7 @@ const Login = () => {
                 form.reset();
                 setError('');
 
-                navigate('/');
+                navigate('/home');
             })
             .catch(error => {
                 console.error(error);

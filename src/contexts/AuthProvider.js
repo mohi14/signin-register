@@ -28,7 +28,7 @@ const AuthProvider = ({ children }) => {
     }
 
     const verifyEmail = () => {
-        sendEmailVerification(auth.currentUser)
+        return sendEmailVerification(auth.currentUser)
     }
 
     const ForgetPassword = (email) => {
